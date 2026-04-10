@@ -4,6 +4,7 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
+import { BrandLogo } from '@/components/BrandLogo';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { StatusBadge } from '@/components/StatusBadge';
@@ -46,7 +47,7 @@ export function DashboardScreen({ navigation }: Props) {
           <Text style={styles.title}>Your system is organized.</Text>
         </View>
         <Pressable style={styles.avatar}>
-          <Text style={styles.avatarLabel}>K</Text>
+          <BrandLogo variant="mark" height={28} width={28} />
         </Pressable>
       </View>
 
@@ -156,16 +157,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: colors.primary,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  avatarLabel: {
-    ...typography.bodyMedium,
-    color: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   systemCard: {
     backgroundColor: colors.surface,

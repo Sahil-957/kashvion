@@ -1,4 +1,5 @@
 import { Switch, StyleSheet, Text, View } from 'react-native';
+import { BrandLogo } from '@/components/BrandLogo';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { ScreenShell } from '@/components/ScreenShell';
@@ -12,13 +13,14 @@ export function SettingsScreen({ onSignOut }: SettingsScreenProps) {
   return (
     <ScreenShell>
       <View style={styles.header}>
+        <BrandLogo height={46} style={styles.headerLogo} width={170} />
         <Text style={styles.title}>Settings</Text>
         <Text style={styles.subtitle}>Tune your profile, reminders, and calm automation.</Text>
       </View>
 
       <Card style={styles.profileCard}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarLabel}>K</Text>
+          <BrandLogo variant="mark" height={34} width={34} />
         </View>
         <View>
           <Text style={styles.name}>Kashvion User</Text>
@@ -59,6 +61,9 @@ const styles = StyleSheet.create({
   header: {
     gap: 8,
   },
+  headerLogo: {
+    marginBottom: 4,
+  },
   title: {
     ...typography.headingL,
     color: colors.textPrimary,
@@ -76,13 +81,9 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.surfaceSoft,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  avatarLabel: {
-    ...typography.headingM,
-    color: colors.surface,
   },
   name: {
     ...typography.bodyMedium,

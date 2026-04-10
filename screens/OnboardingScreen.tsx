@@ -5,19 +5,19 @@ import {
   NativeSyntheticEvent,
   Platform,
   Pressable,
-  StyleSheet,
   Text,
   useWindowDimensions,
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button } from '@/components/Button';
+import { BrandLogo } from '@/components/BrandLogo';
 import { Card } from '@/components/Card';
 import { ScreenShell } from '@/components/ScreenShell';
-import { colors, typography } from '@/theme';
+import { colors } from '@/theme';
 
 const SIDE_PADDING = 24;
+
 const slides = [
   {
     id: 'overview',
@@ -68,7 +68,7 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
   const indexRef = useRef(0);
   const [index, setIndex] = useState(0);
 
-  const pageWidth = useMemo(() => Math.max(width - SIDE_PADDING * 2, 280), [width]);
+  const pageWidth = useMemo(() => Math.max(width, 320), [width]);
   const bottomInset = Math.max(insets.bottom, Platform.OS === 'android' ? 14 : 20);
   const isLast = index === slides.length - 1;
 
@@ -95,12 +95,13 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
 
   return (
     <ScreenShell scrollable={false}>
-      <View style={styles.screen}>
+      <View className="flex-1 overflow-hidden bg-background pt-4">
         <FlatList
           ref={flatListRef}
           data={slides}
           horizontal
           pagingEnabled
+          disableIntervalMomentum
           bounces={false}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
@@ -110,369 +111,188 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
             offset: pageWidth * itemIndex,
             index: itemIndex,
           })}
-          contentContainerStyle={styles.sliderContent}
-          style={styles.slider}
+          contentContainerStyle={{ flexGrow: 1 }}
+          style={{ flex: 1, overflow: 'hidden' }}
+          decelerationRate="fast"
           renderItem={({ item }) => (
-            <View style={[styles.page, { width: pageWidth }]}>
-              <View style={styles.hero}>
-                <Text style={styles.brand}>KASHVION</Text>
-                <Text style={styles.eyebrow}>{item.eyebrow}</Text>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-              </View>
-
-              <Card style={styles.card}>
-                <View style={styles.cardHeader}>
-                  <View>
-                    <Text style={styles.cardTitle}>{item.cardTitle}</Text>
-                    <Text style={styles.cardSubtitle}>{item.cardSubtitle}</Text>
+            <View
+              className="overflow-hidden"
+              style={{ width: pageWidth, paddingBottom: 190, paddingHorizontal: SIDE_PADDING }}>
+              <View className="gap-4">
+                <View className="gap-2.5">
+                  <View className="flex-row items-center gap-3">
+                    <View className="rounded-2xl bg-[#F1ECFA] px-2 py-2">
+                      <BrandLogo variant="mark" width={40} height={40} />
+                    </View>
+                    <Text className="font-manrope text-[26px] leading-[30px] text-primary">
+                      Kashvion
+                    </Text>
                   </View>
-                  <View style={[styles.badge, { backgroundColor: item.accent }]}>
-                    <Ionicons color={colors.surface} name="sparkles-outline" size={16} />
-                  </View>
+                  <Text className="font-inter-medium text-xs uppercase tracking-[1.1px] text-tertiary">
+                    {item.eyebrow}
+                  </Text>
+                  <Text className="max-w-[96%] font-manrope-extrabold text-[40px] leading-[46px] tracking-[-0.8px] text-text-primary">
+                    {item.title}
+                  </Text>
+                  <Text className="max-w-[94%] font-inter text-[16px] leading-[28px] text-text-secondary">
+                    {item.description}
+                  </Text>
                 </View>
 
-                <View style={[styles.visual, { backgroundColor: item.tone }]}>
-                  {item.mode === 'overview' ? (
-                    <>
-                      <View style={styles.overviewTop}>
-                        <View>
-                          <Text style={styles.visualLabel}>Utilities</Text>
-                          <Text style={styles.visualAmount}>$120</Text>
-                        </View>
-                        <View style={styles.alertPill}>
-                          <Text style={styles.alertText}>Due today</Text>
-                        </View>
-                      </View>
-                      <View style={styles.metricRow}>
-                        <View style={styles.metricCard}>
-                          <Ionicons color={colors.primary} name="wallet-outline" size={18} />
-                          <Text style={styles.metricTitle}>Finance</Text>
-                          <Text style={styles.metricMeta}>2 tracked</Text>
-                        </View>
-                        <View style={styles.metricCard}>
-                          <Ionicons color={colors.warning} name="time-outline" size={18} />
-                          <Text style={styles.metricTitle}>Upcoming</Text>
-                          <Text style={styles.metricMeta}>48 hrs</Text>
-                        </View>
-                      </View>
-                    </>
-                  ) : null}
-
-                  {item.mode === 'timeline' ? (
-                    <View style={styles.timeline}>
-                      {[
-                        { label: 'Internet', date: 'Apr 12', icon: 'wifi-outline' as const },
-                        { label: 'Netflix', date: 'Apr 14', icon: 'tv-outline' as const },
-                        { label: 'Card Bill', date: 'Apr 17', icon: 'card-outline' as const },
-                      ].map((entry) => (
-                        <View key={entry.label} style={styles.timelineRow}>
-                          <View style={styles.timelineIcon}>
-                            <Ionicons color={colors.primary} name={entry.icon} size={16} />
-                          </View>
-                          <View style={styles.timelineCopy}>
-                            <Text style={styles.timelineTitle}>{entry.label}</Text>
-                            <Text style={styles.timelineMeta}>{entry.date}</Text>
-                          </View>
-                          <Ionicons color={colors.textSecondary} name="chevron-forward" size={16} />
-                        </View>
-                      ))}
+                <Card style={{ padding: 18 }}>
+                  <View className="flex-row items-center justify-between">
+                    <View>
+                      <Text className="font-manrope text-2xl leading-[30px] text-text-primary">
+                        {item.cardTitle}
+                      </Text>
+                      <Text className="mt-1 font-inter-medium text-[15px] leading-[22px] text-text-secondary">
+                        {item.cardSubtitle}
+                      </Text>
                     </View>
-                  ) : null}
-
-                  {item.mode === 'steps' ? (
-                    <View style={styles.steps}>
-                      {[
-                        { label: 'Capture', icon: 'camera-outline' as const, bg: '#E6EEFF' },
-                        { label: 'Review', icon: 'create-outline' as const, bg: '#FFF7DB' },
-                        { label: 'Save', icon: 'checkmark-outline' as const, bg: '#EAF8EF' },
-                      ].map((step, stepIndex) => (
-                        <View key={step.label} style={styles.stepWrap}>
-                          <View style={[styles.stepIcon, { backgroundColor: step.bg }]}>
-                            <Ionicons color={colors.primary} name={step.icon} size={20} />
-                          </View>
-                          <Text style={styles.stepLabel}>{step.label}</Text>
-                          {stepIndex < 2 ? (
-                            <View style={styles.stepConnector}>
-                              <Ionicons color={colors.textSecondary} name="arrow-forward" size={16} />
-                            </View>
-                          ) : null}
-                        </View>
-                      ))}
-                    </View>
-                  ) : null}
-                </View>
-
-                <View style={styles.innerDots}>
-                  {slides.map((slide, slideIndex) => (
                     <View
-                      key={slide.id}
-                      style={[
-                        styles.innerDot,
-                        { backgroundColor: slideIndex === index ? slide.accent : colors.border },
-                      ]}
-                    />
-                  ))}
-                </View>
-              </Card>
+                      className="h-[34px] w-[34px] items-center justify-center rounded-full"
+                      style={{ backgroundColor: item.accent }}>
+                      <Ionicons color={colors.surface} name="sparkles-outline" size={16} />
+                    </View>
+                  </View>
+
+                  <View
+                    className="mt-3 rounded-[20px] p-4"
+                    style={{ minHeight: 200, backgroundColor: item.tone }}>
+                    {item.mode === 'overview' ? (
+                      <>
+                        <View className="flex-row items-center justify-between">
+                          <View>
+                            <Text className="font-inter-medium text-xs uppercase tracking-[1px] text-text-secondary">
+                              Utilities
+                            </Text>
+                            <Text className="mt-1 font-manrope-extrabold text-5xl leading-[38px] text-text-primary">
+                              $120
+                            </Text>
+                          </View>
+                          <View className="rounded-full bg-[#FFE3DB] px-3.5 py-2">
+                            <Text className="font-inter-medium text-[15px] leading-[22px] text-danger">
+                              Due today
+                            </Text>
+                          </View>
+                        </View>
+                        <View className="mt-[18px] flex-row gap-3">
+                          <View className="flex-1 rounded-[18px] bg-surface p-[14px]">
+                            <Ionicons color={colors.primary} name="wallet-outline" size={18} />
+                            <Text className="mt-2 font-manrope text-lg leading-6 text-text-primary">
+                              Finance
+                            </Text>
+                            <Text className="mt-1 font-inter text-[15px] leading-[22px] text-text-secondary">
+                              2 tracked
+                            </Text>
+                          </View>
+                          <View className="flex-1 rounded-[18px] bg-surface p-[14px]">
+                            <Ionicons color={colors.warning} name="time-outline" size={18} />
+                            <Text className="mt-2 font-manrope text-lg leading-6 text-text-primary">
+                              Upcoming
+                            </Text>
+                            <Text className="mt-1 font-inter text-[15px] leading-[22px] text-text-secondary">
+                              48 hrs
+                            </Text>
+                          </View>
+                        </View>
+                      </>
+                    ) : null}
+
+                    {item.mode === 'timeline' ? (
+                      <View className="gap-3">
+                        {[
+                          { label: 'Internet', date: 'Apr 12', icon: 'wifi-outline' as const },
+                          { label: 'Netflix', date: 'Apr 14', icon: 'tv-outline' as const },
+                          { label: 'Card Bill', date: 'Apr 17', icon: 'card-outline' as const },
+                        ].map((entry) => (
+                          <View
+                            key={entry.label}
+                            className="flex-row items-center gap-3 rounded-2xl bg-surface p-[14px]">
+                            <View className="h-[34px] w-[34px] items-center justify-center rounded-full bg-[#E9EEFF]">
+                              <Ionicons color={colors.primary} name={entry.icon} size={16} />
+                            </View>
+                            <View className="flex-1">
+                              <Text className="font-inter-medium text-[15px] leading-[22px] text-text-primary">
+                                {entry.label}
+                              </Text>
+                              <Text className="mt-0.5 font-inter-medium text-xs leading-4 text-text-secondary">
+                                {entry.date}
+                              </Text>
+                            </View>
+                            <Ionicons color={colors.textSecondary} name="chevron-forward" size={16} />
+                          </View>
+                        ))}
+                      </View>
+                    ) : null}
+
+                    {item.mode === 'steps' ? (
+                      <View className="flex-row items-center justify-between">
+                        {[
+                          { label: 'Capture', icon: 'camera-outline' as const, bg: '#E6EEFF' },
+                          { label: 'Review', icon: 'create-outline' as const, bg: '#FFF7DB' },
+                          { label: 'Save', icon: 'checkmark-outline' as const, bg: '#EAF8EF' },
+                        ].map((step, stepIndex) => (
+                          <View key={step.label} className="relative flex-1 items-center">
+                            <View
+                              className="h-14 w-14 items-center justify-center rounded-[18px]"
+                              style={{ backgroundColor: step.bg }}>
+                              <Ionicons color={colors.primary} name={step.icon} size={20} />
+                            </View>
+                            <Text className="mt-2.5 font-inter-medium text-[15px] leading-[22px] text-text-primary">
+                              {step.label}
+                            </Text>
+                            {stepIndex < 2 ? (
+                              <View className="absolute right-[-8px] top-5">
+                                <Ionicons color={colors.textSecondary} name="arrow-forward" size={16} />
+                              </View>
+                            ) : null}
+                          </View>
+                        ))}
+                      </View>
+                    ) : null}
+                  </View>
+
+                  <View className="mt-[14px] flex-row gap-2.5">
+                    {slides.map((slide, slideIndex) => (
+                      <View
+                        key={slide.id}
+                        className="h-3 w-3 rounded-full"
+                        style={{
+                          backgroundColor: slideIndex === index ? slide.accent : colors.border,
+                        }}
+                      />
+                    ))}
+                  </View>
+                </Card>
+              </View>
             </View>
           )}
         />
 
-        <View style={[styles.footer, { paddingBottom: bottomInset }]}>
-          <View style={styles.footerTop}>
-            <View style={styles.pagination}>
+        <View
+          className="absolute bottom-0 left-0 right-0 border-t border-[#ECECF2] bg-background px-6 pt-3"
+          style={{ paddingBottom: bottomInset }}>
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row gap-2">
               {slides.map((slide, slideIndex) => (
                 <Pressable
                   key={slide.id}
                   onPress={() => goToSlide(slideIndex)}
-                  style={[styles.pageDot, slideIndex === index ? styles.pageDotActive : null]}
+                  className={slideIndex === index ? 'h-1 w-6 rounded-full bg-primary' : 'h-1 w-6 rounded-full bg-[#D8DDE7]'}
                 />
               ))}
             </View>
             {!isLast ? (
               <Pressable onPress={onContinue}>
-                <Text style={styles.skip}>Skip</Text>
+                <Text className="font-inter-semibold text-[13px] leading-[18px] text-text-secondary">
+                  Skip
+                </Text>
               </Pressable>
             ) : null}
           </View>
-          <Button
-            label={isLast ? 'Get Started' : 'Next'}
-            onPress={() => {
-              if (isLast) {
-                onContinue();
-                return;
-              }
-
-              goToSlide(index + 1);
-            }}
-            style={styles.button}
-          />
         </View>
       </View>
     </ScreenShell>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    paddingTop: 16,
-    paddingHorizontal: SIDE_PADDING,
-  },
-  slider: {
-    flex: 1,
-  },
-  sliderContent: {
-    flexGrow: 1,
-  },
-  page: {
-    gap: 20,
-    paddingBottom: 150,
-  },
-  hero: {
-    gap: 10,
-  },
-  brand: {
-    ...typography.label,
-    color: colors.primary,
-    letterSpacing: 2,
-  },
-  eyebrow: {
-    ...typography.meta,
-    color: colors.tertiary,
-    textTransform: 'uppercase',
-    letterSpacing: 1.1,
-  },
-  title: {
-    ...typography.headingXL,
-    color: colors.textPrimary,
-    fontSize: 28,
-    lineHeight: 36,
-  },
-  description: {
-    ...typography.body,
-    color: colors.textSecondary,
-    fontSize: 16,
-    lineHeight: 26,
-  },
-  card: {
-    gap: 14,
-    padding: 18,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cardTitle: {
-    ...typography.headingL,
-    color: colors.textPrimary,
-  },
-  cardSubtitle: {
-    ...typography.bodyMedium,
-    color: colors.textSecondary,
-    marginTop: 4,
-  },
-  badge: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  visual: {
-    minHeight: 220,
-    borderRadius: 20,
-    padding: 16,
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  overviewTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  visualLabel: {
-    ...typography.meta,
-    color: colors.textSecondary,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
-  visualAmount: {
-    ...typography.headingXL,
-    color: colors.textPrimary,
-    marginTop: 4,
-  },
-  alertPill: {
-    borderRadius: 999,
-    backgroundColor: '#FFE3DB',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-  },
-  alertText: {
-    ...typography.bodyMedium,
-    color: colors.danger,
-  },
-  metricRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 18,
-  },
-  metricCard: {
-    flex: 1,
-    borderRadius: 18,
-    backgroundColor: colors.surface,
-    padding: 14,
-    gap: 8,
-  },
-  metricTitle: {
-    ...typography.headingM,
-    color: colors.textPrimary,
-  },
-  metricMeta: {
-    ...typography.body,
-    color: colors.textSecondary,
-  },
-  timeline: {
-    gap: 12,
-  },
-  timelineRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    borderRadius: 16,
-    backgroundColor: colors.surface,
-    padding: 14,
-  },
-  timelineIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E9EEFF',
-  },
-  timelineCopy: {
-    flex: 1,
-  },
-  timelineTitle: {
-    ...typography.bodyMedium,
-    color: colors.textPrimary,
-  },
-  timelineMeta: {
-    ...typography.meta,
-    color: colors.textSecondary,
-    marginTop: 2,
-  },
-  steps: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  stepWrap: {
-    flex: 1,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  stepIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepLabel: {
-    ...typography.bodyMedium,
-    color: colors.textPrimary,
-    marginTop: 10,
-  },
-  stepConnector: {
-    position: 'absolute',
-    right: -8,
-    top: 20,
-  },
-  innerDots: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  innerDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  footer: {
-    position: 'absolute',
-    left: SIDE_PADDING,
-    right: SIDE_PADDING,
-    bottom: 0,
-    backgroundColor: colors.background,
-    paddingTop: 12,
-    gap: 12,
-  },
-  footerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  pagination: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  pageDot: {
-    width: 24,
-    height: 4,
-    borderRadius: 999,
-    backgroundColor: '#D8DDE7',
-  },
-  pageDotActive: {
-    backgroundColor: colors.primary,
-  },
-  skip: {
-    ...typography.label,
-    color: colors.textSecondary,
-  },
-  button: {
-    minHeight: 52,
-  },
-});

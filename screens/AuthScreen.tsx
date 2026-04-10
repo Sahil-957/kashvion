@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BrandLogo } from '@/components/BrandLogo';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { InputField } from '@/components/InputField';
@@ -18,6 +19,7 @@ export function AuthScreen({ onAuthenticate }: AuthScreenProps) {
   return (
     <ScreenShell>
       <View style={styles.header}>
+        <BrandLogo height={56} style={styles.logo} width={200} />
         <Text style={styles.kicker}>Secure Access</Text>
         <Text style={styles.title}>Welcome back to Kashvion</Text>
         <Text style={styles.subtitle}>Sign in to manage bills, reminders, and subscriptions.</Text>
@@ -64,6 +66,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     marginTop: 60,
+  },
+  logo: {
+    marginBottom: 4,
   },
   kicker: {
     ...typography.label,
