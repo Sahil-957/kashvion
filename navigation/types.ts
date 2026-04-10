@@ -3,6 +3,7 @@ import { BillDraft } from '@/types/bill';
 export type RootStackParamList = {
   Onboarding: undefined;
   Auth: undefined;
+  Login: undefined;
   MainTabs: undefined;
   ConfirmBill: { draft: BillDraft; billId?: string };
   ItemDetails: { billId: string };

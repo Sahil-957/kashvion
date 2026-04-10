@@ -10,6 +10,7 @@ import { ActivityScreen } from '@/screens/ActivityScreen';
 import { SettingsScreen } from '@/screens/SettingsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen';
 import { AuthScreen } from '@/screens/AuthScreen';
+import { LoginScreen } from '@/screens/LoginScreen';
 import { ConfirmBillScreen } from '@/screens/ConfirmBillScreen';
 import { ItemDetailsScreen } from '@/screens/ItemDetailsScreen';
 import { colors, shadows } from '@/theme';
@@ -69,15 +70,41 @@ export function AppNavigator() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!hasOnboarded ? (
-          <Stack.Screen name="Onboarding">
-            {() => <OnboardingScreen onContinue={() => setHasOnboarded(true)} />}
-          </Stack.Screen>
-        ) : !isSignedIn ? (
-          <Stack.Screen name="Auth">
-            {() => <AuthScreen onAuthenticate={() => setIsSignedIn(true)} />}
-          </Stack.Screen>
+      <Stack.Navigator
+        key={isSignedIn ? 'app' : 'guest'}
+        initialRouteName={hasOnboarded ? 'Auth' : 'Onboarding'}
+        screenOptions={{ headerShown: false }}>
+        {!isSignedIn ? (
+          <>
+            <Stack.Screen name="Onboarding">
+              {({ navigation }) => (
+                <OnboardingScreen
+                  onContinue={() => {
+                    setHasOnboarded(true);
+                    navigation.navigate('Auth');
+                  }}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Auth">
+              {({ navigation }) => (
+                <AuthScreen
+                  onAuthenticate={() => setIsSignedIn(true)}
+                  onBack={() => navigation.goBack()}
+                  onGoToLogin={() => navigation.navigate('Login')}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Login">
+              {({ navigation }) => (
+                <LoginScreen
+                  onAuthenticate={() => setIsSignedIn(true)}
+                  onBack={() => navigation.goBack()}
+                  onGoToSignup={() => navigation.navigate('Auth')}
+                />
+              )}
+            </Stack.Screen>
+          </>
         ) : (
           <>
             <Stack.Screen name="MainTabs">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { BrandLogo } from '@/components/BrandLogo';
 import { Card } from '@/components/Card';
@@ -7,24 +7,21 @@ import { InputField } from '@/components/InputField';
 import { ScreenShell } from '@/components/ScreenShell';
 import { colors, typography } from '@/theme';
 
-interface AuthScreenProps {
+interface LoginScreenProps {
   onAuthenticate: () => void;
   onBack?: () => void;
-  onGoToLogin: () => void;
+  onGoToSignup: () => void;
 }
 
-export function AuthScreen({ onAuthenticate, onBack, onGoToLogin }: AuthScreenProps) {
+export function LoginScreen({ onAuthenticate, onBack, onGoToSignup }: LoginScreenProps) {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const canSubmit =
-    !!email.trim() &&
-    !!username.trim() &&
-    !!password.trim() &&
-    !!confirmPassword.trim() &&
-    password === confirmPassword;
+  const canSubmit = !!email.trim() && !!password.trim();
+
+  const handleForgotPassword = () => {
+    Alert.alert('Forgot Password', 'Password reset will be connected once the auth backend is ready.');
+  };
 
   return (
     <ScreenShell style={styles.screen}>
@@ -36,10 +33,10 @@ export function AuthScreen({ onAuthenticate, onBack, onGoToLogin }: AuthScreenPr
 
       <View style={styles.header}>
         <BrandLogo height={56} style={styles.logo} width={200} />
-        <Text style={styles.kicker}>Create Account</Text>
-        <Text style={styles.title}>Start your Kashvion account</Text>
+        <Text style={styles.kicker}>Welcome Back</Text>
+        <Text style={styles.title}>Log in to Kashvion</Text>
         <Text style={styles.subtitle}>
-          Sign up with your details first, then use the login page if you already have an account.
+          Use your email and password, or tap Google to continue with your connected account.
         </Text>
       </View>
 
@@ -53,26 +50,15 @@ export function AuthScreen({ onAuthenticate, onBack, onGoToLogin }: AuthScreenPr
           value={email}
         />
         <InputField
-          autoCapitalize="none"
-          label="Username"
-          onChangeText={setUsername}
-          placeholder="Choose a username"
-          value={username}
-        />
-        <InputField
           label="Password"
           onChangeText={setPassword}
-          placeholder="Create a password"
+          placeholder="Enter your password"
           secureTextEntry
           value={password}
         />
-        <InputField
-          label="Confirm Password"
-          onChangeText={setConfirmPassword}
-          placeholder="Confirm your password"
-          secureTextEntry
-          value={confirmPassword}
-        />
+        <Pressable accessibilityRole="button" onPress={handleForgotPassword}>
+          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        </Pressable>
         <Pressable
           accessibilityRole="button"
           disabled={!canSubmit}
@@ -83,17 +69,31 @@ export function AuthScreen({ onAuthenticate, onBack, onGoToLogin }: AuthScreenPr
             !canSubmit ? styles.disabledButton : null,
             pressed && canSubmit ? styles.pressed : null,
           ]}>
-          <Text style={styles.primaryButtonLabel}>Sign Me Up</Text>
+          <Text style={styles.primaryButtonLabel}>Login</Text>
         </Pressable>
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerLabel}>or continue with</Text>
+          <View style={styles.dividerLine} />
+        </View>
+        <View style={styles.googleRow}>
+          <Pressable
+            accessibilityLabel="Login with Google"
+            accessibilityRole="button"
+            onPress={onAuthenticate}
+            style={({ pressed }) => [styles.googleButton, pressed ? styles.pressed : null]}>
+            <Ionicons color={colors.primary} name="logo-google" size={22} />
+          </Pressable>
+        </View>
         <Pressable
           accessibilityRole="button"
-          onPress={onGoToLogin}
+          onPress={onGoToSignup}
           style={({ pressed }) => [
             styles.actionButton,
             styles.secondaryButton,
             pressed ? styles.pressed : null,
           ]}>
-          <Text style={styles.secondaryButtonLabel}>Login</Text>
+          <Text style={styles.secondaryButtonLabel}>Create Account</Text>
         </Pressable>
       </Card>
     </ScreenShell>
@@ -145,21 +145,49 @@ const styles = StyleSheet.create({
     gap: 14,
     marginTop: 10,
   },
-  actionButton: {
-    minHeight: 52,
-    width: '100%',
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 18,
+  forgotPassword: {
+    ...typography.label,
+    color: colors.tertiary,
+    textAlign: 'right',
+    marginTop: -4,
   },
   primaryButton: {
-    marginTop: 2,
+    marginTop: -2,
     backgroundColor: colors.primary,
   },
   primaryButtonLabel: {
     ...typography.bodyMedium,
     color: colors.surface,
+  },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 2,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.border,
+  },
+  dividerLabel: {
+    ...typography.meta,
+    color: colors.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  googleRow: {
+    alignItems: 'center',
+  },
+  googleButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.borderStrong,
+    backgroundColor: colors.surface,
   },
   secondaryButton: {
     marginTop: -2,
@@ -171,11 +199,19 @@ const styles = StyleSheet.create({
     ...typography.bodyMedium,
     color: colors.ink,
   },
+  actionButton: {
+    minHeight: 52,
+    width: '100%',
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 18,
+  },
   disabledButton: {
     opacity: 0.55,
   },
   pressed: {
     opacity: 0.9,
-    transform: [{ scale: 0.99 }],
+    transform: [{ scale: 0.98 }],
   },
 });

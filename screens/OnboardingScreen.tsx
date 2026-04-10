@@ -93,6 +93,15 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
     [pageWidth]
   );
 
+  const handleFooterPress = useCallback(() => {
+    if (isLast) {
+      onContinue();
+      return;
+    }
+
+    goToSlide(index + 1);
+  }, [goToSlide, index, isLast, onContinue]);
+
   return (
     <ScreenShell scrollable={false}>
       <View className="flex-1 overflow-hidden bg-background pt-4">
@@ -283,13 +292,18 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
                 />
               ))}
             </View>
-            {!isLast ? (
-              <Pressable onPress={onContinue}>
-                <Text className="font-inter-semibold text-[13px] leading-[18px] text-text-secondary">
-                  Skip
-                </Text>
-              </Pressable>
-            ) : null}
+            <Pressable
+              onPress={handleFooterPress}
+              className={isLast ? 'rounded-full bg-primary px-5 py-3' : undefined}>
+              <Text
+                className={
+                  isLast
+                    ? 'font-inter-semibold text-[13px] leading-[18px] text-surface'
+                    : 'font-inter-semibold text-[13px] leading-[18px] text-text-secondary'
+                }>
+                {isLast ? 'Get Started' : 'Next'}
+              </Text>
+            </Pressable>
           </View>
         </View>
       </View>
