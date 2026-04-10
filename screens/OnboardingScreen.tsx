@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   previewCard: {
     marginTop: 12,
-    backgroundColor: '#FDFDFD',
+    backgroundColor: colors.surface,
     gap: 10,
   },
   previewTitle: {

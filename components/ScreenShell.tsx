@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, ViewStyle } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '@/theme';
 
 interface ScreenShellProps extends PropsWithChildren {
@@ -9,8 +9,16 @@ interface ScreenShellProps extends PropsWithChildren {
 }
 
 export function ScreenShell({ children, style, scrollable = true }: ScreenShellProps) {
+  const insets = useSafeAreaInsets();
+
   const content = scrollable ? (
-    <ScrollView contentContainerStyle={[styles.content, style]} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.content,
+        { paddingBottom: Math.max(insets.bottom + 24, 40) },
+        style,
+      ]}
+      showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>
   ) : (
@@ -18,7 +26,7 @@ export function ScreenShell({ children, style, scrollable = true }: ScreenShellP
   );
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
       <KeyboardAvoidingView
         behavior={Platform.select({ ios: 'padding', default: undefined })}
         style={styles.flex}>
@@ -37,8 +45,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
+    flexGrow: 1,
     padding: 20,
     gap: 20,
-    paddingBottom: 120,
   },
 });

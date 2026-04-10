@@ -1,5 +1,6 @@
 import { useDeferredValue, useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -43,13 +44,16 @@ export function ActivityScreen({ navigation }: Props) {
         <Text style={styles.title}>Activity</Text>
         <Text style={styles.subtitle}>Search and filter everything inside your current system.</Text>
       </View>
-      <TextInput
-        onChangeText={setSearch}
-        placeholder="Search bills and subscriptions"
-        placeholderTextColor={colors.textSecondary}
-        style={styles.search}
-        value={search}
-      />
+      <View style={styles.searchWrap}>
+        <Ionicons color={colors.textSecondary} name="search-outline" size={18} />
+        <TextInput
+          onChangeText={setSearch}
+          placeholder="Search bills and subscriptions"
+          placeholderTextColor={colors.textSecondary}
+          style={styles.search}
+          value={search}
+        />
+      </View>
       <View style={styles.filters}>
         {filters.map((item) => (
           <CategoryChip
@@ -104,13 +108,19 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.textSecondary,
   },
-  search: {
+  searchWrap: {
     minHeight: 52,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: colors.border,
     paddingHorizontal: 16,
     backgroundColor: colors.surface,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  search: {
+    flex: 1,
     color: colors.textPrimary,
     ...typography.body,
   },

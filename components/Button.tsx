@@ -32,7 +32,9 @@ export function Button({
         style,
       ]}>
       {loading ? (
-        <ActivityIndicator color={variant === 'outline' ? colors.primary : colors.surface} />
+        <ActivityIndicator
+          color={variant === 'primary' ? colors.surface : colors.primary}
+        />
       ) : (
         <Text style={[styles.label, textStyles[variant]]}>{label}</Text>
       )}
@@ -43,7 +45,7 @@ export function Button({
 const styles = StyleSheet.create({
   base: {
     minHeight: 52,
-    borderRadius: 14,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 18,
@@ -65,12 +67,12 @@ const variantStyles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   secondary: {
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.surfaceSoft,
   },
   outline: {
-    backgroundColor: colors.surface,
+    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colors.borderStrong,
   },
 });
 
@@ -79,9 +81,9 @@ const textStyles = StyleSheet.create({
     color: colors.surface,
   },
   secondary: {
-    color: colors.textPrimary,
+    color: colors.ink,
   },
   outline: {
-    color: colors.primary,
+    color: colors.ink,
   },
 });

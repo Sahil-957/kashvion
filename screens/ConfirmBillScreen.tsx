@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   summaryCard: {
-    backgroundColor: '#FFF9E6',
+    backgroundColor: colors.surfaceSoft,
     gap: 6,
   },
   summaryLabel: {

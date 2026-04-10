@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     color: colors.surface,
   },
   systemCard: {
-    backgroundColor: '#EFF2FF',
+    backgroundColor: colors.surface,
     gap: 8,
   },
   systemLabel: {
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: colors.surfaceMuted,
+    backgroundColor: colors.surfaceSoft,
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 6,

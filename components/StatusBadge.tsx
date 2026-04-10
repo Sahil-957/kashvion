@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
 
 const statusStyles = StyleSheet.create({
   upcoming: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: '#ECEFFD',
   },
   overdue: {
-    backgroundColor: '#FDECEC',
+    backgroundColor: '#FBEDEB',
   },
   paid: {
-    backgroundColor: '#EAF7EF',
+    backgroundColor: '#EEF5F0',
   },
 });
 

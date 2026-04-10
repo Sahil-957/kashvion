@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     paddingHorizontal: 16,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceSoft,
     color: colors.textPrimary,
     ...typography.body,
   },

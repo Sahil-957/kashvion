@@ -26,7 +26,7 @@ function MainTabs({ onSignOut }: { onSignOut: () => void }) {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: styles.tabBar,
-        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarShowLabel: false,
         tabBarIcon: ({ color, size, focused }) => {
           const iconMap: Record<keyof MainTabParamList, keyof typeof Ionicons.glyphMap> = {
             Home: focused ? 'home' : 'home-outline',
@@ -38,12 +38,16 @@ function MainTabs({ onSignOut }: { onSignOut: () => void }) {
           if (route.name === 'Add') {
             return (
               <View style={styles.fabInner}>
-                <Ionicons color={colors.textPrimary} name="add" size={24} />
+                <Ionicons color={colors.surface} name="add" size={24} />
               </View>
             );
           }
 
-          return <Ionicons color={color} name={iconMap[route.name]} size={size} />;
+          return (
+            <View style={focused ? styles.activeIconWrap : undefined}>
+              <Ionicons color={focused ? colors.surface : color} name={iconMap[route.name]} size={size} />
+            </View>
+          );
         },
         tabBarIconStyle: route.name === 'Add' ? styles.fabButton : undefined,
       })}>
@@ -51,7 +55,7 @@ function MainTabs({ onSignOut }: { onSignOut: () => void }) {
       <Tabs.Screen
         name="Add"
         component={AddBillScreen}
-        options={{ title: '', tabBarLabel: () => null }}
+        options={{ title: '' }}
       />
       <Tabs.Screen name="Activity" component={ActivityScreen} />
       <Tabs.Screen name="Settings">{() => <SettingsScreen onSignOut={onSignOut} />}</Tabs.Screen>
@@ -95,27 +99,31 @@ const styles = StyleSheet.create({
     right: 16,
     bottom: 18,
     height: 72,
-    borderRadius: 24,
-    backgroundColor: colors.surface,
+    borderRadius: 28,
+    backgroundColor: colors.surfaceSoft,
     borderTopWidth: 0,
-    paddingBottom: 10,
-    paddingTop: 10,
+    paddingBottom: 12,
+    paddingTop: 12,
     ...shadows.card,
-  },
-  tabBarLabel: {
-    fontSize: 11,
-    fontFamily: 'Inter_500Medium',
   },
   fabButton: {
     marginTop: -18,
   },
   fabInner: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-    backgroundColor: colors.secondary,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     ...shadows.card,
+  },
+  activeIconWrap: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
   },
 });
