@@ -27,7 +27,7 @@ const slides = [
       'Track payments, subscriptions, and due dates in one place with a calmer daily view.',
     cardTitle: 'Today at a glance',
     cardSubtitle: '3 items need attention',
-    tone: '#EEF2FF',
+    tone: '#FFF6D8',
     accent: colors.primary,
     mode: 'overview' as const,
   },
@@ -39,7 +39,7 @@ const slides = [
       'Upcoming and overdue items stay visible so you can act before anything slips.',
     cardTitle: 'Priority queue',
     cardSubtitle: 'Sorted by due date',
-    tone: '#FFF7DB',
+    tone: '#FFF5CF',
     accent: colors.secondary,
     mode: 'timeline' as const,
   },
@@ -51,7 +51,7 @@ const slides = [
       'Capture a bill, refine the details, and keep your system updated in just a few taps.',
     cardTitle: 'Capture flow',
     cardSubtitle: 'Camera to confirmation',
-    tone: '#FFF1E3',
+    tone: '#FFF3D6',
     accent: colors.tertiary,
     mode: 'steps' as const,
   },
@@ -121,7 +121,7 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
               <View className="gap-4">
                 <View className="gap-2.5">
                   <View className="flex-row items-center gap-3">
-                    <View className="rounded-2xl bg-[#F1ECFA] px-2 py-2">
+                    <View className="rounded-2xl bg-[#FFF3CC] px-2 py-2">
                       <BrandLogo variant="mark" width={40} height={40} />
                     </View>
                     <Text className="font-manrope text-[26px] leading-[30px] text-primary">
@@ -170,10 +170,10 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
                               $120
                             </Text>
                           </View>
-                          <View className="rounded-full bg-[#FFE3DB] px-3.5 py-2">
-                            <Text className="font-inter-medium text-[15px] leading-[22px] text-danger">
-                              Due today
-                            </Text>
+                        <View className="rounded-full bg-[#FFEAB0] px-3.5 py-2">
+                          <Text className="font-inter-medium text-[15px] leading-[22px] text-danger">
+                            Due today
+                          </Text>
                           </View>
                         </View>
                         <View className="mt-[18px] flex-row gap-3">
@@ -209,7 +209,7 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
                           <View
                             key={entry.label}
                             className="flex-row items-center gap-3 rounded-2xl bg-surface p-[14px]">
-                            <View className="h-[34px] w-[34px] items-center justify-center rounded-full bg-[#E9EEFF]">
+                            <View className="h-[34px] w-[34px] items-center justify-center rounded-full bg-[#FFF1C3]">
                               <Ionicons color={colors.primary} name={entry.icon} size={16} />
                             </View>
                             <View className="flex-1">
@@ -229,9 +229,9 @@ export function OnboardingScreen({ onContinue }: OnboardingScreenProps) {
                     {item.mode === 'steps' ? (
                       <View className="flex-row items-center justify-between">
                         {[
-                          { label: 'Capture', icon: 'camera-outline' as const, bg: '#E6EEFF' },
-                          { label: 'Review', icon: 'create-outline' as const, bg: '#FFF7DB' },
-                          { label: 'Save', icon: 'checkmark-outline' as const, bg: '#EAF8EF' },
+                          { label: 'Capture', icon: 'camera-outline' as const, bg: '#FFF1C3' },
+                          { label: 'Review', icon: 'create-outline' as const, bg: '#FFE39A' },
+                          { label: 'Save', icon: 'checkmark-outline' as const, bg: '#FFF8E3' },
                         ].map((step, stepIndex) => (
                           <View key={step.label} className="relative flex-1 items-center">
                             <View
